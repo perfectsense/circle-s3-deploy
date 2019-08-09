@@ -27,7 +27,9 @@ in Circle but at a significant performance premium.
 Your .circleci/config.yml should look something like this:
 
 ```yaml
-version: 2.0
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
 jobs:
   build:
     docker:
@@ -39,19 +41,15 @@ jobs:
       - run:
           name: Export Environment Variables
           command: |
-            echo 'export DEPLOY_SOURCE_DIR=$CIRCLE_WORKING_DIRECTORY/site/target' >> $BASH_ENV
+            echo 'export DEPLOY_SOURCE_DIR=/site/target' >> $BASH_ENV
       - run:
-          name: Install extra dependencies
+          name: Build steps
           command: |
-            sudo apt-get update && sudo apt install python-pip
-      - run:
-          command: |
-            mvn package
+            mvn -B package
+      - aws-cli/install
       - deploy:
           command: |
-            git clone --single-branch --branch circleci https://github.com/perfectsense/circle-s3-deploy.git && ./circle-s3-deploy/deploy.sh
+            git clone https://github.com/perfectsense/circle-s3-deploy.git && ./circle-s3-deploy/deploy.sh
 ```
 
 Note that any of the above environment variables can be set in Circle, and do not need to be included in your config.yml. `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` should always be set to your S3 bucket credentials as environment variables in Circle, not this file.
-
-
