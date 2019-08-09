@@ -14,6 +14,8 @@ set -e -u
 # PURGE_OLDER_THAN_DAYS = Files in the .../deploy and .../pull-request prefixes in S3 older than this number of days will be deleted; leave blank for 90, 0 to disable.
 # SKIP_DEPENDENCY_LIST = true to skip the "mvn dependency:list" generation and deployment
 
+CIRCLE_WORKING_DIRECTORY=${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}
+
 if [[ -z "${DEPLOY_BUCKET}" ]]
 then
     echo "Bucket not specified via \$DEPLOY_BUCKET"
@@ -25,8 +27,7 @@ DEPLOY_BRANCHES=${DEPLOY_BRANCHES:-}
 
 DEPLOY_EXTENSIONS=${DEPLOY_EXTENSIONS:-"jar war zip"}
 
-DEPLOY_SOURCE_DIR=${DEPLOY_SOURCE_DIR:-$CIRCLE_WORKING_DIRECTORY/target}
-DEPLOY_SOURCE_DIR=$(echo $(eval echo $DEPLOY_SOURCE_DIR))
+DEPLOY_SOURCE_DIR=${CIRCLE_WORKING_DIRECTORY/DEPLOY_SOURCE_DIR:-$CIRCLE_WORKING_DIRECTORY/target}
 
 PURGE_OLDER_THAN_DAYS=${PURGE_OLDER_THAN_DAYS:-"90"}
 
