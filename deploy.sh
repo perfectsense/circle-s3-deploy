@@ -33,13 +33,12 @@ PURGE_OLDER_THAN_DAYS=${PURGE_OLDER_THAN_DAYS:-"90"}
 
 SKIP_DEPENDENCY_LIST=${SKIP_DEPENDENCY_LIST:-"false"}
 
-# CircleCI defined variable only for forked PRs
-CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
 
 if [[ ! -z "${CIRCLE_PR_NUMBER}" ]]
 then
+    # CircleCI defined variable only for forked PRs
+    CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
     target_path=pull-request/${CIRCLE_PR_NUMBER}
-
 elif [[ -z "${DEPLOY_BRANCHES}" || "$CIRCLE_BRANCH" =~ "$DEPLOY_BRANCHES" ]]
 then
     target_path=deploy/${CIRCLE_BRANCH////.}/$CIRCLE_BUILD_NUMBER
