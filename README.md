@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Build steps
           command: |
-            mvn -B package
+            ./gradlew build
       - aws-cli/install
       - deploy:
           command: |
