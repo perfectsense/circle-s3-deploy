@@ -43,7 +43,7 @@ then
     target_path=pull-request/${CIRCLE_PR_NUMBER}
 elif [[ -z "${DEPLOY_BRANCHES}" || "$CIRCLE_BRANCH" =~ "$DEPLOY_BRANCHES" ]]
 then
-    target_path=deploy/${CIRCLE_BRANCH////.}/$CIRCLE_BUILD_NUMBER
+    target_path=deploy/${CIRCLE_BRANCH////.}/$CIRCLE_BUILD_NUM
 
 else
     echo "Not deploying."
