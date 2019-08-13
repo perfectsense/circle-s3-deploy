@@ -21,6 +21,10 @@ then
     echo "Bucket not specified via \$DEPLOY_BUCKET"
 fi
 
+# CircleCI defined variable only for forked PRs
+CIRCLE_PULL_REQUEST=${CIRCLE_PULL_REQUEST:-}
+CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
+
 DEPLOY_BUCKET_PREFIX=${DEPLOY_BUCKET_PREFIX:-}
 
 DEPLOY_BRANCHES=${DEPLOY_BRANCHES:-}
@@ -36,7 +40,6 @@ SKIP_DEPENDENCY_LIST=${SKIP_DEPENDENCY_LIST:-"false"}
 if [[ ! -z "${CIRCLE_PR_NUMBER}" && ! -z "${CIRCLE_PULL_REQUEST}" ]]
 then
     # CircleCI defined variable only for forked PRs
-    CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
     target_path=pull-request/${CIRCLE_PR_NUMBER}
 elif [[ -z "${DEPLOY_BRANCHES}" || "$CIRCLE_BRANCH" =~ "$DEPLOY_BRANCHES" ]]
 then
