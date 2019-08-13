@@ -21,6 +21,10 @@ then
     echo "Bucket not specified via \$DEPLOY_BUCKET"
 fi
 
+# CircleCI defined variable only for forked PRs
+CIRCLE_PULL_REQUEST=${CIRCLE_PULL_REQUEST:-}
+CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
+
 DEPLOY_BUCKET_PREFIX=${DEPLOY_BUCKET_PREFIX:-}
 
 DEPLOY_BRANCHES=${DEPLOY_BRANCHES:-}
@@ -33,16 +37,12 @@ PURGE_OLDER_THAN_DAYS=${PURGE_OLDER_THAN_DAYS:-"90"}
 
 SKIP_DEPENDENCY_LIST=${SKIP_DEPENDENCY_LIST:-"false"}
 
-# CircleCI defined variable only for forked PRs
-CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
-
-if [[ ! -z "${CIRCLE_PR_NUMBER}" ]]
+if [[ ! -z "${CIRCLE_PR_NUMBER}" && ! -z "${CIRCLE_PULL_REQUEST}" ]]
 then
     target_path=pull-request/${CIRCLE_PR_NUMBER}
-
 elif [[ -z "${DEPLOY_BRANCHES}" || "$CIRCLE_BRANCH" =~ "$DEPLOY_BRANCHES" ]]
 then
-    target_path=deploy/${CIRCLE_BRANCH////.}/$CIRCLE_BUILD_NUMBER
+    target_path=deploy/${CIRCLE_BRANCH////.}/$CIRCLE_BUILD_NUM
 
 else
     echo "Not deploying."
