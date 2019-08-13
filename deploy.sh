@@ -33,8 +33,7 @@ PURGE_OLDER_THAN_DAYS=${PURGE_OLDER_THAN_DAYS:-"90"}
 
 SKIP_DEPENDENCY_LIST=${SKIP_DEPENDENCY_LIST:-"false"}
 
-
-if [[ ! -z "${CIRCLE_PR_NUMBER}" ]]
+if [[ ! -z "${CIRCLE_PR_NUMBER}" && ! -z "${CIRCLE_PULL_REQUEST}" ]]
 then
     # CircleCI defined variable only for forked PRs
     CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
