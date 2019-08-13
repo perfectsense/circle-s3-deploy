@@ -39,7 +39,6 @@ SKIP_DEPENDENCY_LIST=${SKIP_DEPENDENCY_LIST:-"false"}
 
 if [[ ! -z "${CIRCLE_PR_NUMBER}" && ! -z "${CIRCLE_PULL_REQUEST}" ]]
 then
-    # CircleCI defined variable only for forked PRs
     target_path=pull-request/${CIRCLE_PR_NUMBER}
 elif [[ -z "${DEPLOY_BRANCHES}" || "$CIRCLE_BRANCH" =~ "$DEPLOY_BRANCHES" ]]
 then
