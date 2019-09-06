@@ -41,6 +41,7 @@ jobs:
       - run:
           name: Export Environment Variables
           command: |
+            //only use one of the following
             echo 'export DEPLOY_SOURCE_DIR=/site/target' >> $BASH_ENV //maven
             echo 'export DEPLOY_SOURCE_DIR=/site/build/libs' >> $BASH_ENV //gradle            
       - run:
